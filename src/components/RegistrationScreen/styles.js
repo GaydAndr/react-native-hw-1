@@ -1,8 +1,21 @@
 import { StyleSheet } from 'react-native';
+import variables from '../../../assets/variables';
+
+const { fontFamily, fontSize, color } = variables;
 
 export default StyleSheet.create({
   keyboarBox: {
-    width: '100%',
+    justifyContent: 'flex-end',
+  },
+  bgImage: {},
+
+  scrollViewLandscape: {
+    width: '50%',
+    marginLeft: 'auto',
+  },
+  scrollViewPortrait: {
+    flex: 1,
+    justifyContent: 'flex-end',
   },
   wraper: {
     paddingTop: 92,
@@ -12,9 +25,11 @@ export default StyleSheet.create({
   },
 
   title: {
+    fontFamily: fontFamily.Medium,
+    ...fontSize.size_30,
     textAlign: 'center',
     marginBottom: 32,
-    fontSize: 30,
+    letterSpacing: 0.01,
     fontWeight: '500',
   },
 
@@ -49,9 +64,10 @@ export default StyleSheet.create({
   },
 
   input: {
+    fontFamily: fontFamily.Regular,
     flex: 1,
-    paddingVertical: 15,
-    fontSize: 16,
+    paddingVertical: 10,
+    ...fontSize.size_16,
   },
 
   form: {
@@ -64,17 +80,27 @@ export default StyleSheet.create({
     paddingVertical: 16,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FF6C00',
+    backgroundColor: color.accentColor,
   },
 
   btnTitle: {
+    fontFamily: fontFamily.Regular,
     color: '#fff',
-    fontSize: 16,
+    ...fontSize.size_16,
   },
 
   toSingUp: {
+    fontFamily: fontFamily.Regular,
     textAlign: 'center',
     color: '#1B4371',
-    fontSize: 16,
+    ...fontSize.size_16,
+  },
+  showPassBtn: {
+    fontFamily: fontFamily.Regular,
+    color: '#1B4371',
+  },
+
+  onfocus: {
+    borderColor: color.accentColor,
   },
 });
