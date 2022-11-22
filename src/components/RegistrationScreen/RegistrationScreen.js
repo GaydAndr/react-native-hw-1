@@ -14,7 +14,7 @@ import {
   ImageBackground,
   StatusBar,
   Dimensions,
-  BackHandler,
+  // BackHandler,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 
@@ -38,7 +38,6 @@ export const RegistrationScreen = ({ setRegisterData }) => {
   // useEffect(() => {
   //   const backAction = () => {
   //     console.log(123);
-  //     // keyboardHide();
   //     return true;
   //   };
   //   const backHandler = BackHandler.addEventListener(
@@ -94,15 +93,15 @@ export const RegistrationScreen = ({ setRegisterData }) => {
 
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
-      <KeyboardAvoidingView style={styles.keyboarBox}>
-        <ImageBackground
-          style={{
-            ...styles.bgImage,
-            width: dimensions.width,
-            height: dimensions.height + statusBarHeight,
-          }}
-          source={require('./../../../assets/Screens/auth-bg-photo.jpg')}
-        >
+      <ImageBackground
+        style={{
+          ...styles.bgImage,
+          width: dimensions.width,
+          height: dimensions.height + statusBarHeight,
+        }}
+        source={require('./../../../assets/Screens/auth-bg-photo.jpg')}
+      >
+        <KeyboardAvoidingView style={styles.keyboarBox} behavior={'padding'}>
           <TouchableWithoutFeedback onPress={keyboardHide}>
             <ScrollView
               contentContainerStyle={
@@ -203,8 +202,8 @@ export const RegistrationScreen = ({ setRegisterData }) => {
               </View>
             </ScrollView>
           </TouchableWithoutFeedback>
-        </ImageBackground>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </ImageBackground>
     </TouchableWithoutFeedback>
   );
 };

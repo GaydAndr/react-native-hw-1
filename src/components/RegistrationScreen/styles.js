@@ -5,6 +5,7 @@ const { fontFamily, fontSize, color } = variables;
 
 export default StyleSheet.create({
   keyboarBox: {
+    flex: 1,
     justifyContent: 'flex-end',
   },
   bgImage: {},
@@ -22,6 +23,10 @@ export default StyleSheet.create({
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
     backgroundColor: '#fff',
+  },
+
+  form: {
+    marginHorizontal: 16,
   },
 
   title: {
@@ -56,8 +61,9 @@ export default StyleSheet.create({
     borderWidth: 1,
     height: 50,
     paddingHorizontal: 16,
-    borderColor: '#F6F6F6',
+    borderColor: '#E8E8E8',
     borderRadius: 8,
+    backgroundColor: '#F6F6F6',
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
@@ -68,10 +74,6 @@ export default StyleSheet.create({
     flex: 1,
     paddingVertical: 10,
     ...fontSize.size_16,
-  },
-
-  form: {
-    marginHorizontal: 40,
   },
 
   btn: {
