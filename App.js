@@ -12,6 +12,7 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
 import { RegistrationScreen } from './src/components/RegistrationScreen/RegistrationScreen';
+import { LoginScreen } from './src/components/LoginScreen/LoginScreen';
 
 const statusBarHeight = StatusBar.currentHeight;
 
@@ -65,6 +66,7 @@ export default function App() {
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
       <RegistrationScreen setRegisterData={setRegisterData} />
+      {/* <LoginScreen setRegisterData={setRegisterData} /> */}
     </View>
   );
 }
