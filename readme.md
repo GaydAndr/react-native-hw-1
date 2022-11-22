@@ -5,3 +5,7 @@
 ![Screenshot_20221122-024129_Expo Go](https://user-images.githubusercontent.com/62076338/203187128-e0a3c501-ea60-463a-9de7-52401f8bb49f.png)
 
 ![Screenshot_20221122-024133_Expo Go](https://user-images.githubusercontent.com/62076338/203187161-2c201186-75e8-4f84-96b1-2d9389c0e451.png)
+
+![react-native-debugger_tiPiZqTkW1](https://user-images.githubusercontent.com/62076338/203188096-f4583e68-be30-4b70-b0b9-ccd76797fbdb.png)
+
+![Screenshot_20221122-025249_Expo Go](https://user-images.githubusercontent.com/62076338/203188241-47ad6856-75f8-4028-908c-ccfc4c374e75.png)
