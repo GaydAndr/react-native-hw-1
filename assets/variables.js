@@ -1,3 +1,5 @@
+import { StatusBar } from 'react-native';
+
 export default {
   fontFamily: {
     Medium: 'Roboto-Medium',
@@ -19,4 +21,5 @@ export default {
   color: {
     accentColor: '#FF6C00',
   },
+  statusBarHeight: StatusBar.currentHeight,
 };
