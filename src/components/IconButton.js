@@ -11,6 +11,7 @@ import {
   userIcon,
   iconArrowLeft,
   thumbsUpIcon,
+  iconComment,
 } from '../../assets/icon/iconSvg';
 
 export const IconButton = ({ type }) => {
@@ -22,6 +23,8 @@ export const IconButton = ({ type }) => {
   const ArrowLeftSvg = () => <SvgXml xml={iconArrowLeft} style={styles.icon} />;
   const ShapeSvg = () => <SvgXml xml={iconShape} style={styles.icon} />;
   const ThumbsUpIcon = () => <SvgXml xml={thumbsUpIcon} style={styles.icon} />;
+  const Comment = () => <SvgXml xml={iconComment} style={styles.icon} />;
+
   let svg;
   switch (type) {
     case 'add':
@@ -48,14 +51,17 @@ export const IconButton = ({ type }) => {
     case 'map':
       svg = <MapSvg />;
       break;
+    case 'comment':
+      svg = <Comment />;
+      break;
     default:
       svg = '';
   }
 
   return (
-    <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
-      {svg}
-    </TouchableOpacity>
+    // <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
+    <>{svg}</>
+    // </TouchableOpacity>
   );
 };
 
