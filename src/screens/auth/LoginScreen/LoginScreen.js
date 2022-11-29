@@ -22,7 +22,10 @@ import styles from './styles';
 import { useTogglePasswordVisibility } from '../../../hooks/useTogglePasswordVisibility';
 
 const addPhoto = require('../../../../assets/add-photo.png');
-const statusBarHeight = StatusBar.currentHeight;
+
+import variables from '../../../../assets/variables';
+
+const { statusBarHeight } = variables;
 
 export const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
