@@ -15,6 +15,8 @@ import * as Location from 'expo-location';
 import styles from './styles';
 
 import { IconButton } from './../../../components/IconButton';
+import db from '../../../firebase/config';
+import { useSelector } from 'react-redux';
 
 export const CreateScreen = ({ navigation }) => {
   const isFocused = useIsFocused();
@@ -26,6 +28,7 @@ export const CreateScreen = ({ navigation }) => {
   const [locationName, setLocationName] = useState('');
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [borderInput, setBorderInput] = useState(null);
+  const { userId, nickName } = useSelector((state) => state.auth);
 
   const keyboardHide = () => {
     setIsShowKeyboard(false);
@@ -58,9 +61,40 @@ export const CreateScreen = ({ navigation }) => {
     if (!photo) {
       return;
     }
+    uploadPostToServer();
     navigation.navigate('Post', { photo, name, location, locationName });
     setName('');
     setLocationName('');
+  };
+
+  const uploadPostToServer = async () => {
+    const photo = await uploadPhotoToServer();
+
+    const createPost = await db.firestore().collection('posts').add({
+      photo,
+      location,
+      userId,
+      nickName,
+      locationName,
+      name,
+    });
+  };
+  const uploadPhotoToServer = async () => {
+    try {
+      const response = await fetch(photo);
+      const file = await response.blob();
+      const postId = Date.now().toString();
+      await db.storage().ref(`postImage/${postId}`).put(file);
+      const processedPhoto = await db
+        .storage()
+        .ref('postImage')
+        .child(postId)
+        .getDownloadURL();
+      return processedPhoto;
+    } catch (error) {
+      console.log('error.message', error.message);
+      console.log('error.code', error.code);
+    }
   };
 
   return (

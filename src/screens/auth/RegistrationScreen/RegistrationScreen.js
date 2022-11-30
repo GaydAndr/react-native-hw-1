@@ -17,17 +17,30 @@ import {
   // BackHandler,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
-
+import { useDispatch } from 'react-redux';
+import { nanoid } from '@reduxjs/toolkit';
+import * as ImagePicker from 'expo-image-picker';
 import styles from './styles';
-import { useTogglePasswordVisibility } from '../../../hooks/useTogglePasswordVisibility';
 
-const addPhoto = require('../../../../assets/add-photo.png');
+import { authSignUpUser } from './../../../redux/auth/authOperations';
+import db from '../../../firebase/config';
+import { useTogglePasswordVisibility } from '../../../hooks/useTogglePasswordVisibility';
+import { IconButton } from './../../../components/IconButton';
+
 const statusBarHeight = StatusBar.currentHeight;
 
-export const RegistrationScreen = ({ navigation, setRegisterData }) => {
+const initialState = {
+  login: '',
+  email: '',
+  password: '',
+};
+
+export const RegistrationScreen = ({ navigation }) => {
   const [login, setLogin] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [avatar, setAvatar] = useState(null);
+  const [state, setstate] = useState(initialState);
   const [loginOnFocus, setLoginOnFocus] = useState(false);
   const [emailOnFocus, setEmailOnFocus] = useState(false);
   const [passOnFocus, setPassOnFocus] = useState(false);
@@ -35,6 +48,7 @@ export const RegistrationScreen = ({ navigation, setRegisterData }) => {
     useTogglePasswordVisibility();
   const [keyboardStatus, setKeyboardStatus] = useState(false);
 
+  const dispatch = useDispatch();
   // useEffect(() => {
   //   const backAction = () => {
   //     console.log(123);
@@ -75,24 +89,54 @@ export const RegistrationScreen = ({ navigation, setRegisterData }) => {
     return () => windowHendler.remove();
   }, []);
 
-  const hendlerSubmit = () => {
-    if (login.length === 0 || email.length === 0 || password.length === 0) {
-      Alert.alert('Ooops', 'Please fill in all fields');
-      return;
-    }
-    Alert.alert(
-      'Credentials',
-      `login: ${login}|` + ` Email: ${email}|. ` + ` Pass: ${password}`
-    );
-    // setRegisterData({
-    //   login,
-    //   email,
-    //   password,
-    // });
-    setLogin('');
-    setEmail('');
-    setPassword('');
+  const handleSubmit = async () => {
+    const avatarImg = await uploadAvatarToServer();
+    console.log(avatarImg);
+    setstate(initialState);
     keyboardHide();
+    dispatch(authSignUpUser(state, avatarImg));
+  };
+
+  const uploadAvatarToServer = async () => {
+    try {
+      console.log('avatar', avatar);
+      if (avatar) {
+        const avatarURL = avatar;
+        const response = await fetch(avatarURL);
+        const file = await response.blob();
+        console.log('file', file);
+        const avatarId = nanoid();
+        await db.storage().ref(`avatarImage/${avatarId}`).put(file);
+        const processedAvatar = await db
+          .storage()
+          .ref('avatarImage')
+          .child(avatarId)
+          .getDownloadURL();
+        return processedAvatar;
+      } else {
+        const processedAvatar = await db
+          .storage()
+          .ref('avatarImage')
+          .child('avatar-default-icon.png')
+          .getDownloadURL();
+        return processedAvatar;
+      }
+    } catch (error) {
+      console.log('error.message', error.message);
+      console.log('error.code', error.code);
+    }
+  };
+  const addAvatar = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: false,
+      allowsMultipleSelection: false,
+    });
+    console.log('result', result);
+
+    if (!result.canceled) {
+      setAvatar(result.assets[0].uri);
+    }
   };
 
   const focusInput = StyleSheet.compose(styles.inputContainer, styles.onfocus);
@@ -128,9 +172,34 @@ export const RegistrationScreen = ({ navigation, setRegisterData }) => {
                   { paddingBottom: keyboardStatus ? 32 : 78 },
                 ]}
               >
-                <View style={styles.photoInput}>
-                  <Image style={styles.addBtnPhoto} source={addPhoto} />
+                <View style={styles.avatarWrapper}>
+                  <View style={styles.avatar}>
+                    {avatar && (
+                      <Image
+                        source={{ uri: avatar }}
+                        style={styles.avatarImg}
+                      />
+                    )}
+                    {!avatar ? (
+                      <TouchableOpacity
+                        onPress={addAvatar}
+                        style={styles.avatarBtn}
+                      >
+                        <IconButton type="add-avatar" />
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity
+                        onPress={() => {
+                          setAvatar(null);
+                        }}
+                        style={styles.avatarBtn}
+                      >
+                        <IconButton type="remove-avatar" />
+                      </TouchableOpacity>
+                    )}
+                  </View>
                 </View>
+
                 <View style={styles.form}>
                   <Text style={styles.title}>Реєстрація</Text>
 
@@ -143,8 +212,13 @@ export const RegistrationScreen = ({ navigation, setRegisterData }) => {
                       style={styles.input}
                       placeholder="Логін"
                       placeholderTextColor="#BDBDBD"
-                      value={login}
-                      onChangeText={(text) => setLogin(text)}
+                      value={state.login}
+                      onChangeText={(value) =>
+                        setstate((prevState) => ({
+                          ...prevState,
+                          login: value,
+                        }))
+                      }
                     />
                   </View>
 
@@ -158,8 +232,13 @@ export const RegistrationScreen = ({ navigation, setRegisterData }) => {
                       placeholder="Адрес электронной почты"
                       placeholderTextColor="#BDBDBD"
                       keyboardType="email-address"
-                      value={email}
-                      onChangeText={(text) => setEmail(text)}
+                      value={state.email}
+                      onChangeText={(value) =>
+                        setstate((prevState) => ({
+                          ...prevState,
+                          email: value,
+                        }))
+                      }
                     />
                   </View>
 
@@ -179,8 +258,13 @@ export const RegistrationScreen = ({ navigation, setRegisterData }) => {
                       secureTextEntry={passwordVisibility}
                       placeholder="Пароль"
                       placeholderTextColor="#BDBDBD"
-                      value={password}
-                      onChangeText={(text) => setPassword(text)}
+                      value={state.password}
+                      onChangeText={(value) =>
+                        setstate((prevState) => ({
+                          ...prevState,
+                          password: value,
+                        }))
+                      }
                     />
                     <Pressable onPress={handlePasswordVisibility}>
                       <Text style={styles.showPassBtn}>
@@ -194,7 +278,7 @@ export const RegistrationScreen = ({ navigation, setRegisterData }) => {
                   <TouchableOpacity
                     activeOpacity={0.8}
                     style={styles.btn}
-                    onPress={hendlerSubmit}
+                    onPress={handleSubmit}
                   >
                     <Text style={styles.btnTitle}>Зареєструватись</Text>
                   </TouchableOpacity>

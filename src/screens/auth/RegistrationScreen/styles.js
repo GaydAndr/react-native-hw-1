@@ -25,6 +25,31 @@ export default StyleSheet.create({
     backgroundColor: '#fff',
   },
 
+  avatarWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  avatar: {
+    position: 'relative',
+    marginTop: -60,
+    width: 120,
+    height: 120,
+    backgroundColor: '#F6F6F6',
+    borderRadius: 16,
+  },
+  avatarImg: {
+    position: 'absolute',
+    top: 0,
+    borderRadius: 16,
+    width: 120,
+    height: 120,
+  },
+  avatarBtn: {
+    position: 'absolute',
+    bottom: 15,
+    right: -12.5,
+  },
+
   form: {
     marginHorizontal: 16,
   },

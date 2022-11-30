@@ -13,19 +13,11 @@ import { CreateScreen } from '../screens/main/CreateScreen/CreateScreen';
 import { ProfileScreen } from '../screens/main/ProfileScreen/ProfileScreen';
 import { IconButton } from '../components/IconButton';
 import styles from './styles';
+import { useDispatch } from 'react-redux';
+import { authSignOutUser } from '../redux/auth/authOperations';
 
 const AuthStack = createStackNavigator();
 const MainTab = createBottomTabNavigator();
-
-const logOut = (navigation) => (
-  <TouchableOpacity
-    style={{
-      padding: 10,
-    }}
-  >
-    <IconButton type="log-out" />
-  </TouchableOpacity>
-);
 
 const goToHome = (navigation) => (
   <TouchableOpacity
@@ -41,6 +33,22 @@ const goToHome = (navigation) => (
 );
 
 export const useRoute = (isAuth) => {
+  // const dispatch = useDispatch();
+  // const signOut = () => {
+  //   dispatch(authSignOutUser());
+  //   console.log(authSignOutUser());
+  // };
+
+  // const logOut = (navigation) => (
+  //   <TouchableOpacity
+  //     style={{
+  //       padding: 10,
+  //     }}
+  //     onPress={signOut}
+  //   >
+  //     <IconButton type="log-out" />
+  //   </TouchableOpacity>
+  // );
   if (!isAuth) {
     return (
       <AuthStack.Navigator>
@@ -79,9 +87,7 @@ export const useRoute = (isAuth) => {
         options={({ route }) => ({
           tapBarStyle: ((route) => {
             const routeName = getFocusedRouteNameFromRoute(route) ?? 'Comments';
-            console.log(routeName);
             if (routeName === 'Comments') {
-              console.log(123);
               return { display: 'none' };
             }
             return;
@@ -161,7 +167,14 @@ export const useRoute = (isAuth) => {
                     >
                       {options.title}
                     </Text>
-                    {logOut()}
+                    {/* <TouchableOpacity
+                      style={{
+                        padding: 10,
+                      }}
+                      // onPress={signOut}
+                    >
+                      <IconButton type="log-out" />
+                    </TouchableOpacity> */}
                   </View>
                 </View>
               </>

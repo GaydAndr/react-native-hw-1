@@ -1,25 +1,33 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { useDispatch } from 'react-redux';
 import { PostScreen } from './../../nested/PostScreen/PostScreen';
 import { CommentsScreen } from './../../nested/CommentScreens/CommentsScreen';
 import { MapScreen } from './../../nested/MapScreen/MapScreen';
 import { IconButton } from './../../../components/IconButton';
 import variables from '../../../../assets/variables';
+import { authSignOutUser } from './../../../redux/auth/authOperations';
 const { fontFamily, statusBarHeight } = variables;
 
 const NestedScreen = createStackNavigator();
 
-const logOut = (navigation) => (
-  <TouchableOpacity
-    style={{
-      padding: 10,
-    }}
-  >
-    <IconButton type="log-out" />
-  </TouchableOpacity>
-);
 export const HomeScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+
+  const handleSighOut = () => {
+    dispatch(authSignOutUser());
+  };
+  const logOut = (navigation) => (
+    <TouchableOpacity
+      style={{
+        padding: 10,
+      }}
+      onPress={handleSighOut}
+    >
+      <IconButton type="log-out" />
+    </TouchableOpacity>
+  );
   return (
     <NestedScreen.Navigator
       screenOptions={{

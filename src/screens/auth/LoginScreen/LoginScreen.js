@@ -17,17 +17,22 @@ import {
   // BackHandler,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import styles from './styles';
 import { useTogglePasswordVisibility } from '../../../hooks/useTogglePasswordVisibility';
-
-const addPhoto = require('../../../../assets/add-photo.png');
+import { authSignInUser } from '../../../redux/auth/authOperations';
 
 import variables from '../../../../assets/variables';
 
 const { statusBarHeight } = variables;
+const initialState = {
+  email: '',
+  password: '',
+};
 
 export const LoginScreen = ({ navigation }) => {
+  const [state, setstate] = useState(initialState);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailOnFocus, setEmailOnFocus] = useState(false);
@@ -46,7 +51,7 @@ export const LoginScreen = ({ navigation }) => {
   //   );
   //   return () => backHandler.remove();
   // }, []);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
       setKeyboardStatus(true);
@@ -83,18 +88,20 @@ export const LoginScreen = ({ navigation }) => {
   // }
 
   const hendlerSubmit = () => {
-    if (email.length === 0 || password.length === 0) {
-      Alert.alert('Ooops', 'Please fill in all fields');
-      return;
-    }
-    Alert.alert('Credentials', ` Email: ${email}|. ` + ` Pass: ${password}`);
+    dispatch(authSignInUser(state));
+    setstate(initialState);
+    // if (email.length === 0 || password.length === 0) {
+    //   Alert.alert('Ooops', 'Please fill in all fields');
+    //   return;
+    // }
+    // Alert.alert('Credentials', ` Email: ${email}|. ` + ` Pass: ${password}`);
     // setRegisterData({
     //   login,
     //   email,
     //   password,
     // });
-    setEmail('');
-    setPassword('');
+    // setEmail('');
+    // setPassword('');
     keyboardHide();
   };
 
@@ -144,8 +151,13 @@ export const LoginScreen = ({ navigation }) => {
                       placeholder="Адрес электронной почты"
                       placeholderTextColor="#BDBDBD"
                       keyboardType="email-address"
-                      value={email}
-                      onChangeText={(text) => setEmail(text)}
+                      value={state.email}
+                      onChangeText={(value) =>
+                        setstate((prevState) => ({
+                          ...prevState,
+                          email: value,
+                        }))
+                      }
                     />
                   </View>
 
@@ -165,8 +177,13 @@ export const LoginScreen = ({ navigation }) => {
                       secureTextEntry={passwordVisibility}
                       placeholder="Пароль"
                       placeholderTextColor="#BDBDBD"
-                      value={password}
-                      onChangeText={(text) => setPassword(text)}
+                      value={state.password}
+                      onChangeText={(value) =>
+                        setstate((prevState) => ({
+                          ...prevState,
+                          password: value,
+                        }))
+                      }
                     />
                     <Pressable>
                       <TouchableWithoutFeedback
