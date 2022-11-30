@@ -12,6 +12,8 @@ import {
   iconArrowLeft,
   thumbsUpIcon,
   iconComment,
+  addUserPhot,
+  removeUserPhot,
 } from '../../assets/icon/iconSvg';
 
 export const IconButton = ({ type }) => {
@@ -24,6 +26,10 @@ export const IconButton = ({ type }) => {
   const ShapeSvg = () => <SvgXml xml={iconShape} style={styles.icon} />;
   const ThumbsUpIcon = () => <SvgXml xml={thumbsUpIcon} style={styles.icon} />;
   const Comment = () => <SvgXml xml={iconComment} style={styles.icon} />;
+  const AddUserPhot = () => <SvgXml xml={addUserPhot} style={styles.icon} />;
+  const RemoveUserPhot = () => (
+    <SvgXml xml={removeUserPhot} style={styles.icon} />
+  );
 
   let svg;
   switch (type) {
@@ -53,6 +59,12 @@ export const IconButton = ({ type }) => {
       break;
     case 'comment':
       svg = <Comment />;
+      break;
+    case 'add-avatar':
+      svg = <AddUserPhot />;
+      break;
+    case 'remove-avatar':
+      svg = <RemoveUserPhot />;
       break;
     default:
       svg = '';
